@@ -1,27 +1,29 @@
 pipeline {
-  agent {
-    docker {
-      image 'mysql:latest'
-    }
-  }
+    agent any
+    stages {
+        stage('SCM') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/JenkinsTestProject']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/kparunsagar/Jenkins_docker_git.git']]])
+            }
+        }
+        stage('Build image') {
+            steps{
+                script {
+                        app = docker.image("testproject/agent:latest")
+                    }
+                }
+            }
 
-  stages {
-    stage('SCM') {
-        steps {
-      		checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/kparunsagar/Jenkins_docker_git.git']]])
-	      }
-    }
 
-    stage('Build') {
-          steps {
-               sh 'mvn compile'
-          }
+        stage('Check Image') {
+            steps {
+                script {
+                    app.inside() {
+                        sh 'pwd'
+                        sh 'java --version'
+                    }
+                }
+            }
+        }
     }
-
-    stage('Publish') {
-          steps {
-    	      sh 'mvn test'
-          }
-    }
-  }
 }
