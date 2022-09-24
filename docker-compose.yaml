@@ -7,7 +7,7 @@ services:
     #image: tomcat:latest
     #container_name: tomcat
     ports:
-      - "8089:8085"
+      - "3000:8085"
     restart: always
     networks:
       - spring-mysql
