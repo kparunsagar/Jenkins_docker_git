@@ -1,9 +1,4 @@
 pipeline {
-    environment {
-        registry = "kparun/demo"
-        registryCredential = '11Learner1@'
-        dockerImage = ''
-    }
     agent any
     stages {
         stage('SCM') {
