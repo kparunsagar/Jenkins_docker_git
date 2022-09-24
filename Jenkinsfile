@@ -9,7 +9,7 @@ pipeline {
         stage('Build image') {
             steps{
                 script {
-                        app = docker.image("testproject/agent:latest")
+                        app = docker.image("mysql:latest")
                     }
                 }
             }
