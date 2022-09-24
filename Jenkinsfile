@@ -20,8 +20,7 @@ pipeline {
                 steps {
                     sh '''
                         docker compose version
-                    '''
                 }
             }                  
-       }
+        }
 }
