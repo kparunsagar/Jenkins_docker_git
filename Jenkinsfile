@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'tomcat:latest'
+      image 'nginx:latest'
     }
   }
 
