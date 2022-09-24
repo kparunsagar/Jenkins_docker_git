@@ -14,7 +14,7 @@ pipeline {
                 }
             }
 
-        }
+        
         stage('Check Image') {
             steps {
                 script {
