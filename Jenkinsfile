@@ -1,17 +1,31 @@
 pipeline {
-  agent any
-  stages {
-    stage("verify tooling") {
+	agent none  stages {
+  	stage('Maven Install') {
+    	agent {
+      	docker {
+        	image 'tomcat:latest'
+        }
+      }
       steps {
-        sh '''
-          docker version
-          docker info
-          docker compose version 
-          curl --version
-          jq --version
-        '''
+      	sh 'mvn clean install'
       }
     }
+    stage('Docker Build') {
+    	agent any
+      steps {
+      	sh 'docker build -t kparun/nginx:latest .'
+      }
+    }
+    stage('Docker Push') {
+    	agent any
+      steps {
+      	withCredentials([usernamePassword(credentialsId: 'kparun', passwordVariable: '11Learner1@', usernameVariable: 'docker_usr')]) {
+        	sh "docker login -u ${env.docker_usr} -p ${env.11Learner1@}"
+          sh 'docker push kparun/nginx:latest'
+        }
+      }
+    }
+
     stage('Prune Docker data') {
       steps {
         sh 'docker system prune -a --volumes -f'
