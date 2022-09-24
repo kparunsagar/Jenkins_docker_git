@@ -1,14 +1,14 @@
 pipeline {
   agent {
     docker {
-      image 'jenkinsmaven:latest'
+      image 'tomcat:latest'
     }
   }
 
   stages {
     stage('SCM') {
         steps {
-      		checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/executeautomation/SeleniumWithCucucumber']]])
+      		checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/kparunsagar/Jenkins_docker_git.git']]])
 	      }
     }
 
