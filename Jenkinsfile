@@ -16,11 +16,11 @@ pipeline {
                     }
                 }
             }
-            stage ('Docker-copose')
-          steps {
-            sh '''
-              docker compose version
-            }
-                  
+            stage ('Docker-copose'){
+                steps {
+                    sh '''
+                        docker compose version
+                    }
+                }                  
         }
 }
