@@ -5,7 +5,8 @@ pipeline{
 	stages {
 		stage('Build') {
 			steps {
-				sh 'mvn compile'
+				sh 'docker compose up -d --no-color --wait'
+                        	sh 'docker compose ps'
 			}
 		}
 	}
