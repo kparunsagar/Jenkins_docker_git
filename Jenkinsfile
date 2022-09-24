@@ -1,56 +1,26 @@
+// multistage
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      parallel {
-        stage('Build') {
+    agent any
+
+        stages {
+            stage('Source') {
+                steps {
+                    git url: 'https://github.com/kparunsagar/pipeline_springboot.git'
+                }
+            }
+            stage('Build') {
+                steps {
+                    script {
+                        def mvnHome = tool 'maven'
+                        bat "${mvnHome}\\bin\\mvn -B verify"
+                    }
+                }
+            }
+            stage ('Docker-copose')
           steps {
-            echo 'Building the .NET Core application'
-          }
+            sh '''
+              docker compose version
+            }
+                  
         }
-
-        stage('Test') {
-          steps {
-            echo 'Testing the application'
-            echo "Get the DriverPath ${ChromeDriverPath}"
-          }
-        }
-
-        stage('Test Log') {
-          environment {
-            LocalVariable = 'HelloLocal'
-          }
-          steps {
-            writeFile(file: 'LogTestFile.txt', text: "This is the ChromeDriverPath ${ChromeDriverPath} and localvariable Value ${LocalVariable}")
-          }
-        }
-
-      }
-    }
-
-    stage('Deploy') {
-      when {
-        branch 'master'
-      }
-      parallel {
-        stage('Deploy') {
-          steps {
-            input(message: 'Do you want to Deployment ?', id: 'OK')
-            echo 'Deploying the app in IIS server'
-          }
-        }
-
-        stage('Artifacts') {
-          steps {
-            archiveArtifacts 'LogTestFile.txt'
-          }
-        }
-
-      }
-    }
-
-  }
-  environment {
-    ChromeDriverPath = 'C:\\Driver\\Path\\ChromeDriver.exe'
-  }
 }
