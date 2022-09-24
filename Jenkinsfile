@@ -11,13 +11,13 @@ pipeline {
 					git 'https://github.com/kparunsagar/Jenkins_docker_git.git'
 				}
 			}
-			stage('Building our image') {
-				steps{
-					script {
-						dockerImage = docker.build registry + ":$kparun"
-					}
-				}
-			}
+			stage('Build image') {
+            			steps{
+                			script {
+                        			app = docker.image("testproject/agent:latest")
+                    			}
+                		}
+            		}
 			stage('Deploy our image') {
 				steps{
 					script {
