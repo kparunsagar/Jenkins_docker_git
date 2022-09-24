@@ -4,7 +4,15 @@ pipeline {
 	registryCredential = 'kparun'
 	dockerImage = ''
 	}
-	agent any
+	agent
+	{
+        docker { 
+                 image "tomcat/jdk:latest"
+                 registryUrl 'https://index.docker.io/v1/'
+                 registryCredentialsId "docker_usr"
+                 reuseNode true
+               }
+    	} 
 		stages {
 			stage('Cloning our Git') {
 				steps {
