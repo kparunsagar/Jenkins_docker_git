@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('SCM') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/JenkinsTestProject']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/kparunsagar/Jenkins_docker_git.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/dockerproject']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/kparunsagar/Jenkins_docker_git.git']]])
             }
         }
         stage('Build image') {
@@ -14,7 +14,11 @@ pipeline {
                 }
             }
 
-
+        stage('docker build/push") {
+              docker.withRegistry("https://index.docker.io/v1/", "dockerhub") {
+                  def app docker.build("wardviaene/docker-nodejs-deno:${commit_id}", '.').push()
+              }
+        }
         stage('Check Image') {
             steps {
                 script {
